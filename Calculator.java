@@ -3,8 +3,9 @@ package AlfaCalc;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Calculator {
+import static AlfaCalc.Main.calc;
 
+public class Calculator {
     int a;
     int b;
     int c;
@@ -20,9 +21,7 @@ public class Calculator {
             "LXXI", "LXXII", "LXXIII", "LXXIV", "LXXV", "LXXVI", "LXXVII", "LXXVIII", "LXXIX", "LXXX",
             "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII", "LXXXIX", "XC",
             "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"};
-    Scanner scanner = new Scanner(System.in);
-    String s1 = scanner.nextLine();
-    String s2 = s1.replaceAll("\\s+", "");
+
     String s3;
     String s4;
     String resrim;
@@ -57,29 +56,30 @@ public class Calculator {
         }
     }
 
-    void subString1() {
+    void subString1(String sS) {
 
-        for (int i = 0; i < s2.length(); i++) {
+        for (int i = 0; i < sS.length(); i++) {
             char c1;
-            c1 = s2.charAt(i);
+            c1 = sS.charAt(i);
             if (c1 == '+' || c1 == '-' || c1 == '*' || c1 == '/') {
-                s3 = s2.substring(0, i);
+                s3 = sS.substring(0, i);
             }
         }
     }
 
-    void subString2() {
-        for (int i = 0; i < s2.length(); i++) {
+    void subString2(String sS) {
+        for (int i = 0; i < sS.length(); i++) {
             char c1;
-            c1 = s2.charAt(i);
+            c1 = sS.charAt(i);
             if (c1 == '+' || c1 == '-' || c1 == '*' || c1 == '/') {
-                s4 = s2.substring(i + 1);
+                s4 = sS.substring(i + 1);
 
             }
         }
     }
 
-    public void result1() throws IOException {
+    public String result1(String s2) throws IOException {
+
         int result1 = 0;
         char c2;
         if (a != 0 && b != 0) {
@@ -103,6 +103,7 @@ public class Calculator {
                 for (int i = 0; i < array2.length; i++) {
                     if (result1 == i) {
                         resrim = array2[i];
+                        return resrim;
                     }
                 }
                 System.out.println(resrim);
@@ -116,19 +117,23 @@ public class Calculator {
                 c1 = s2.charAt(i);
                 if (c1 == '+') {
                     result1 = c + d;
-                    System.out.println(result1);
+                    s2 = String.valueOf(result1);
+                    return s2;
 
                 } else if (c1 == '-') {
                     result1 = c - d;
-                    System.out.println(result1);
+                    s2 = String.valueOf(result1);
+                    return s2;
 
                 } else if (c1 == '*') {
                     result1 = c * d;
-                    System.out.println(result1);
+                    s2 = String.valueOf(result1);
+                    return s2;
 
                 } else if (c1 == '/') {
                     result1 = c / d;
-                    System.out.println(result1);
+                    s2 = String.valueOf(result1);
+                    return s2;
 
                 }
 
@@ -138,23 +143,37 @@ public class Calculator {
         } else {
             throw new IOException();
         }
-
+        return s2;
     }
 
+
+}
+
+class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String s1 = scanner.nextLine();
+        calc(s1);
+        scanner.close();
+
+    }
+    public static String calc(String input) {
+        String s2 = input.replaceAll("\\s+", "");
         Calculator r = new Calculator();
-        r.subString1();
-        r.subString2();
+        r.subString1(s2);
+        r.subString2(s2);
         try {
             r.ab1();
             r.ab2();
             r.cd1();
             r.cd2();
-            r.result1();
+            input = r.result1(s2);
+            System.out.println(input);
         } catch (NumberFormatException e) {
             throw new NumberFormatException();
         }  catch (IOException e) {
             throw new RuntimeException();
         }
+        return input;
     }
 }
